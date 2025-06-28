@@ -11,7 +11,7 @@ pipeline {
         stage('Run Python Script') {
             steps {
                 echo '🐍 Running data cleaning script...'
-                sh 'python3 script.py'
+                sh 'source /opt/jenkins_venv/bin/activate && python script.py'
             }
         }
 
