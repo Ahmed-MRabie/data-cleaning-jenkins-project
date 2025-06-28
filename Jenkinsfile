@@ -5,6 +5,7 @@ pipeline {
         stage('Checkout from GitHub') {
             steps {
                 git credentialsId: 'github-creds', url: 'https://github.com/Ahmed-MRabie/data-cleaning-jenkins-project.git'
+            }
         }
 
         stage('Run Python Script') {
@@ -22,4 +23,3 @@ pipeline {
         }
     }
 }
-
