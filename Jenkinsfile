@@ -16,11 +16,21 @@ pipeline {
             }
         }
 
-        stage('Archive Cleaned File') {
+        stage('Push Cleaned Data to GitHub') {
             steps {
-                echo '📦 Archiving cleaned data file...'
-                archiveArtifacts artifacts: 'cleaned_data.csv', fingerprint: true
+                withCredentials([usernamePassword(credentialsId: 'github-creds', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
+                    sh '''
+                        git config --global user.email "ahmedmrabie525@gmail.com"
+                        git config --global user.name "$GIT_USER"
+
+                        git remote set-url origin https://$GIT_USER:$GIT_PASS@github.com/Ahmed-MRabie/data-cleaning-jenkins-project.git
+                        git add cleaned_data.csv
+                        git commit -m "Add cleaned data from Jenkins job" || echo "No changes to commit"
+                        git push origin master
+                    '''
+                }
             }
         }
+
     }
 }
